@@ -42,10 +42,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Encoder Raw", getEncoderRaw());
   }
 
-  public void setFrontElevatorVoltage(double voltage) {
+  public void setFrontElevatorSpeed(double speed) {
     // Safety protocol to ensure that the cargo doesn't go beyond it's frame
 
-    if (voltage > 0) {
+    if (speed > 0) {
       // Intends to move upwards, prevent if the top switch is on
       if (front_top_switch.get()) return;
     } else {
@@ -53,17 +53,17 @@ public class ElevatorSubsystem extends SubsystemBase {
       if (front_bottom_switch.get()) return;
     }
 
-    front_motor.set(voltage);
+    front_motor.set(speed);
   }
 
-  public void setRearElevatorVoltage(double voltage) {
-    if (voltage > 0) {
+  public void setRearElevatorSpeed(double speed) {
+    if (speed > 0) {
       if (rear_top_switch.get()) return;
     } else {
       if (rear_bottom_switch.get()) return;
     }
 
-    rear_motor.set(voltage);
+    rear_motor.set(speed);
   }
 
   // Switch state getters

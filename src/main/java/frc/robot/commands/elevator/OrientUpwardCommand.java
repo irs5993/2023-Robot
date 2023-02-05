@@ -11,7 +11,7 @@ import frc.robot.Constants.MotorSpeed;
 
 public class OrientUpwardCommand extends CommandBase {
   private final ElevatorSubsystem elevatorSubsystem;
-  private double rear_elevator_voltage = Constants.MotorSpeedValues.MEDIUM, front_elevator_voltage = Constants.MotorSpeedValues.MEDIUM;
+  private double rear_elevator_speed = Constants.MotorSpeedValues.MEDIUM, front_elevator_speed = Constants.MotorSpeedValues.MEDIUM;
   
   public OrientUpwardCommand(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
@@ -24,34 +24,34 @@ public class OrientUpwardCommand extends CommandBase {
 
     switch(speed) {
       case LOW:
-        rear_elevator_voltage = Constants.MotorSpeedValues.LOW;
-        front_elevator_voltage = Constants.MotorSpeedValues.LOW;
+        rear_elevator_speed = Constants.MotorSpeedValues.LOW;
+        front_elevator_speed = Constants.MotorSpeedValues.LOW;
         break;
       case MEDIUM:
         break;
       case HIGH:
-        rear_elevator_voltage = Constants.MotorSpeedValues.HIGH;
-        front_elevator_voltage = Constants.MotorSpeedValues.HIGH;
+        rear_elevator_speed = Constants.MotorSpeedValues.HIGH;
+        front_elevator_speed = Constants.MotorSpeedValues.HIGH;
         break;
       case MAX:
-        rear_elevator_voltage = Constants.MotorSpeedValues.MAX;
-        front_elevator_voltage = Constants.MotorSpeedValues.MAX;
+        rear_elevator_speed = Constants.MotorSpeedValues.MAX;
+        front_elevator_speed = Constants.MotorSpeedValues.MAX;
         break;
     }
   }
 
-  public OrientUpwardCommand(ElevatorSubsystem elevatorSubsystem, double voltage) {
+  public OrientUpwardCommand(ElevatorSubsystem elevatorSubsystem, double speed) {
     this.elevatorSubsystem = elevatorSubsystem;
     addRequirements(elevatorSubsystem); 
 
-    rear_elevator_voltage = Math.abs(voltage);
-    front_elevator_voltage = Math.abs(voltage);
+    rear_elevator_speed = Math.abs(speed);
+    front_elevator_speed = Math.abs(speed);
   }
 
   @Override
   public void execute() {
-    elevatorSubsystem.setRearElevatorVoltage(-rear_elevator_voltage);
-    elevatorSubsystem.setFrontElevatorVoltage(front_elevator_voltage);
+    elevatorSubsystem.setRearElevatorSpeed(-rear_elevator_speed);
+    elevatorSubsystem.setFrontElevatorSpeed(front_elevator_speed);
   }
 
   @Override
