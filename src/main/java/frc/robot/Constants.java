@@ -20,5 +20,20 @@ public final class Constants {
   public static class DriverPorts {
     public static final int CHASIS_LEFT = 0;
     public static final int CHASIS_RIGHT = 1;
+
+    public static final int ELEVATOR_FRONT = 2;
+    public static final int ELEVATOR_REAR = 3;
+  }
+
+  public static class SensorPorts {
+    public static class Elevator {
+      public static final int SWITCH_FRONT_BOTTOM = 0;
+      public static final int SWITCH_FRONT_TOP = 1;
+      public static final int SWITCH_REAR_BOTTOM = 2;
+      public static final int SWITCH_REAR_TOP = 3;
+
+      public static final int ENCODER_SIGNAL_A = 4;
+      public static final int ENCODER_SIGNAL_B = 5;
+    }
   }
 }
