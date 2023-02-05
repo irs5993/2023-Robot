@@ -22,6 +22,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     left_motor = new PWMVictorSPX(Constants.DriverPorts.CHASIS_LEFT);
     right_motor = new PWMVictorSPX(Constants.DriverPorts.CHASIS_RIGHT);
+    right_motor.setInverted(true)
+    ;
 
     drive_base = new DifferentialDrive(left_motor, right_motor);
     gyro = new AHRS(SPI.Port.kMXP);
