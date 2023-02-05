@@ -63,4 +63,17 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void resetEncoder() {
     encoder.reset();
   }
+
+  public void stopRear() {
+    rear_motor.stopMotor();
+  }
+
+  public void stopFront() {
+    front_motor.stopMotor();
+  }
+
+  public void stop() {
+    stopRear();
+    stopFront();
+  }
 }
