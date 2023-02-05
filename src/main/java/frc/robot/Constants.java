@@ -36,4 +36,19 @@ public final class Constants {
       public static final int ENCODER_SIGNAL_B = 5;
     }
   }
+
+  public static class MotorSpeedValues {
+    public static final double LOW = 0.35;
+    public static final double MEDIUM = 0.6;
+    public static final double HIGH = 0.8;
+    public static final double MAX = 1;
+
+  }
+
+  public enum MotorSpeed {
+    LOW,
+    MEDIUM,
+    HIGH,
+    MAX
+  }
 }

@@ -56,6 +56,24 @@ public class ElevatorSubsystem extends SubsystemBase {
     rear_motor.set(voltage);
   }
 
+  // Switch state getters
+  public boolean getFrontBottomSwitch() {
+    return front_bottom_switch.get();
+  }
+
+  public boolean getFrontTopSwitch() {
+    return front_top_switch.get();
+  }
+
+  public boolean getRearBottomSwitch() {
+    return rear_bottom_switch.get();
+  }
+
+  public boolean getRearTopSwitch() {
+    return rear_top_switch.get();
+  }
+
+  // Encoder value getters
   public double getEncoderRaw() {
     return encoder.getRaw();
   }
