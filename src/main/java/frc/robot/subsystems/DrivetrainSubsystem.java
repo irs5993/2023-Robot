@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -22,11 +23,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     left_motor = new PWMVictorSPX(Constants.DriverPorts.CHASIS_LEFT);
     right_motor = new PWMVictorSPX(Constants.DriverPorts.CHASIS_RIGHT);
-    right_motor.setInverted(true)
-    ;
+    right_motor.setInverted(true);
 
     drive_base = new DifferentialDrive(left_motor, right_motor);
     gyro = new AHRS(SPI.Port.kMXP);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Yaw", getYaw());
+    SmartDashboard.putNumber("Pitch", getPitch());
   }
 
   public void drive(double xSpeed, double zRotation) {

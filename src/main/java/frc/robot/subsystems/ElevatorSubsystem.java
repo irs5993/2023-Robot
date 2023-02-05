@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
@@ -30,6 +31,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     encoder = new Encoder(Constants.SensorPorts.Elevator.ENCODER_SIGNAL_A, Constants.SensorPorts.Elevator.ENCODER_SIGNAL_B);
     // rear_encoder.setDistancePerPulse(x);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Front Bottom Switch", getFrontBottomSwitch());
+    SmartDashboard.putBoolean("Front Top Switch", getFrontTopSwitch());
+    SmartDashboard.putBoolean("Rear Bottom Switch", getRearBottomSwitch());
+    SmartDashboard.putBoolean("Rear Top Switch", getRearTopSwitch());
+    SmartDashboard.putNumber("Encoder Raw", getEncoderRaw());
   }
 
   public void setFrontElevatorVoltage(double voltage) {
