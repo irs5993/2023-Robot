@@ -22,7 +22,7 @@ public class ConstantDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    drivetrainSubsystem.drive(xSpeed, -zRotation);
+    drivetrainSubsystem.drive(xSpeed, zRotation);
   }
 
   @Override

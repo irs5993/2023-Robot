@@ -23,7 +23,7 @@ public class DynamicDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    drivetrainSubsystem.drive(-xSpeedSupplier.getAsDouble(), -zRotationSupplier.getAsDouble());
+    drivetrainSubsystem.drive(-xSpeedSupplier.getAsDouble(), zRotationSupplier.getAsDouble());
   }
 
   @Override
