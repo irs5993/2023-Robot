@@ -13,9 +13,9 @@ public final class Autos {
   /** Example static factory for an autonomous command. */
   public static CommandBase exampleAuto(DrivetrainSubsystem drivetrainSubsystem) {
     return Commands.sequence(
-      new ConstantDriveCommand(drivetrainSubsystem, 1, 0).withTimeout(2),
-      new ConstantDriveCommand(drivetrainSubsystem, -0.75, 0).withTimeout(2),
-      new ConstantDriveCommand(drivetrainSubsystem, 0, 1).withTimeout(2)
+      new ConstantDriveCommand(drivetrainSubsystem, 0.55, 0).withTimeout(2),
+      new ConstantDriveCommand(drivetrainSubsystem, -0.55, 0).withTimeout(2),
+      new ConstantDriveCommand(drivetrainSubsystem, 0, -0.55).withTimeout(2)
     );
   }
 

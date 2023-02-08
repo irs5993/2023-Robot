@@ -27,6 +27,10 @@ public class RobotContainer {
     configureDashboard();
   }
 
+  public void resetDrive() {
+    drivetrainSubsystem.resetGyro();
+  }
+
   private void configureButtonBindings() {
   }
 
@@ -35,7 +39,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Default Command", Autos.exampleAuto(drivetrainSubsystem));
 
     // Setting the default commands of subsystems
-    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getX, joystick::getY));
+    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
   }
 
   private void configureDashboard() {
