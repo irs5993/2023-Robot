@@ -23,6 +23,8 @@ public final class Constants {
 
     public static final int ELEVATOR_FRONT = 2;
     public static final int ELEVATOR_REAR = 3;
+
+    public static final int ARM_MAIN = 4;
   }
 
   public static class SensorPorts {
@@ -34,6 +36,11 @@ public final class Constants {
 
       public static final int ENCODER_SIGNAL_A = 4;
       public static final int ENCODER_SIGNAL_B = 5;
+    }
+
+    public static class Arm {
+      public static final int SWITCH_BOTTOM = 6;
+      public static final int SWITCH_TOP = 7;
     }
   }
 
