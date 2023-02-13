@@ -8,8 +8,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
+import frc.robot.commands.drive.FollowTargetCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   private final Joystick joystick = new Joystick(OperatorConstants.JOYSTICK_PORT);
@@ -31,6 +34,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
+    new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(visionSubsystem, drivetrainSubsystem));
   }
 
   private void configureCommands() {
