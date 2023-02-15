@@ -19,11 +19,6 @@ public class ArmSubsystem extends SubsystemBase {
     top_switch = new DigitalInput(Constants.SensorPorts.Arm.SWITCH_TOP);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
   public void setMotorSpeed(double speed) {
     if (speed > 0) {
       if (bottom_switch.get()) return;
@@ -41,5 +36,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public boolean getTopSwitch() {
     return top_switch.get();
+  }
+
+  public void stop() {
+    motor.stopMotor();
   }
 }
