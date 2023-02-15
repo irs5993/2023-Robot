@@ -30,7 +30,6 @@ public class BalanceChargeStationCommand extends PIDCommand {
     SmartDashboard.putBoolean("is on setpoint", getController().atSetpoint());
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

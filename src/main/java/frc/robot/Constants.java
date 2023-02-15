@@ -51,11 +51,4 @@ public final class Constants {
     public static final double MAX = 1;
 
   }
-
-  public enum MotorSpeed {
-    LOW,
-    MEDIUM,
-    HIGH,
-    MAX
-  }
 }

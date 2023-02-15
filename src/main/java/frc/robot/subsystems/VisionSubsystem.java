@@ -8,9 +8,6 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -18,8 +15,6 @@ public class VisionSubsystem extends SubsystemBase {
   
   public VisionSubsystem() {
     camera = new PhotonCamera("main");
-
-
   }
 
   public PhotonPipelineResult getLatestResult() {
@@ -32,10 +27,5 @@ public class VisionSubsystem extends SubsystemBase {
       return result.getBestTarget();
     }
     return null;
-  }
-
-  @Override
-  public void periodic() {
-    
   }
 }

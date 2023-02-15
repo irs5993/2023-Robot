@@ -27,24 +27,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     drive_base = new DifferentialDrive(left_motor, right_motor);
     gyro = new AHRS(SPI.Port.kMXP);
-
-    gyro.calibrate();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Yaw", getYaw());
     SmartDashboard.putNumber("Pitch", getPitch());
-    
-
   }
 
   public void drive(double xSpeed, double zRotation) {
     drive_base.arcadeDrive(xSpeed, -zRotation);
   }
-
+  
   public void resetGyro() {
     gyro.reset();
+  }
+
+  public void calibrateGyro() {
+    gyro.calibrate();
   }
 
   public double getYaw() {

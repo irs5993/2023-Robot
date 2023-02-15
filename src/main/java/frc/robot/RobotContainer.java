@@ -10,7 +10,6 @@ import frc.robot.commands.drive.BalanceChargeStationCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
 import frc.robot.commands.drive.FollowTargetCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   private final Joystick joystick = new Joystick(OperatorConstants.JOYSTICK_PORT);
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -34,7 +32,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
-    new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(visionSubsystem, drivetrainSubsystem));
+    new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
   }
 
   private void configureCommands() {
@@ -53,8 +51,20 @@ public class RobotContainer {
     return Autos.exampleAuto(drivetrainSubsystem);
   }
 
-  // Allows for a gyro reset call from Robot.java when either autonomous or the teleoperated mode is actived
-  public void resetDrive() {
-    drivetrainSubsystem.resetGyro();
-  }
+  
+
+  // Utility functions attached to the robot container 
+  // ------------------------------------------------------------------------------------------------------------
+
+    // Allows for a gyro reset call from Robot.java when either autonomous or the teleoperated mode is actived
+    public void resetGyro() {
+      drivetrainSubsystem.resetGyro();
+    }
+
+    // Allows for the gyro to finish calibration when the robotInit function is ran
+    public void calibrateGyro() {
+      drivetrainSubsystem.calibrateGyro();
+    }
+
+  // ------------------------------------------------------------------------------------------------------------
 }
