@@ -23,8 +23,8 @@ public class MoveElevatorCommand extends CommandBase {
 
   @Override
   public void execute() {
-    elevatorSubsystem.setFrontElevatorSpeed(frontSpeedSupplier.getAsDouble());
-    elevatorSubsystem.setRearElevatorSpeed(rearSpeedSupplier.getAsDouble());
+    elevatorSubsystem.setFrontElevatorSpeed(-frontSpeedSupplier.getAsDouble());
+    elevatorSubsystem.setRearElevatorSpeed(-rearSpeedSupplier.getAsDouble());
   }
 
   @Override

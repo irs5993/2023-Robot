@@ -15,6 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int JOYSTICK_PORT = 0;
+    public static final int CONTROLLER_PORT = 1;
   }
 
   public static class DriverPorts {

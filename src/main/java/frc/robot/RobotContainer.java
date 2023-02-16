@@ -4,24 +4,39 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
+
 import frc.robot.commands.Autos;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
 import frc.robot.commands.drive.FollowTargetCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.commands.elevator.presets.OrientUpwardCommand;
+import frc.robot.commands.elevator.presets.OrientDownwardCommand;
+import frc.robot.commands.elevator.presets.OrientFlatCommand;
+import frc.robot.commands.elevator.MoveElevatorCommand;
+import frc.robot.commands.arm.MoveArmCommand;
+
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.OperatorConstants;
 
 public class RobotContainer {
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   private final Joystick joystick = new Joystick(OperatorConstants.JOYSTICK_PORT);
+  private final CommandXboxController controller = new CommandXboxController(OperatorConstants.CONTROLLER_PORT);
+
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
@@ -33,6 +48,13 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
+
+    controller.rightBumper().onTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
+    controller.leftBumper().onTrue(new MoveArmCommand(armSubsystem, -Constants.MotorSpeedValues.HIGH));
+
+    controller.a().toggleOnTrue(new OrientDownwardCommand(elevatorSubsystem));
+    controller.b().toggleOnTrue(new OrientUpwardCommand(elevatorSubsystem));
+    controller.x().toggleOnTrue(new OrientFlatCommand(elevatorSubsystem));
   }
 
   private void configureCommands() {
@@ -41,6 +63,7 @@ public class RobotContainer {
 
     // Setting the default commands of subsystems
     drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
+    elevatorSubsystem.setDefaultCommand(new MoveElevatorCommand(elevatorSubsystem, controller::getRightY, controller::getLeftY));
   }
 
   private void configureDashboard() {
