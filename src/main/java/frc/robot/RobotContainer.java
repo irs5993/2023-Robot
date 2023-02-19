@@ -20,6 +20,7 @@ import frc.robot.commands.elevator.presets.OrientFlatCommand;
 import frc.robot.commands.elevator.MoveElevatorCommand;
 import frc.robot.commands.arm.ExtendArmCommand;
 import frc.robot.commands.arm.MoveArmCommand;
+import frc.robot.commands.arm.RetractArmCommand;
 import frc.robot.commands.RunGripperCommand;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -53,17 +54,23 @@ public class RobotContainer {
     new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
 
+    // Continuous
     controller.rightTrigger().onTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
     controller.leftTrigger().onTrue(new MoveArmCommand(armSubsystem, -Constants.MotorSpeedValues.HIGH));
 
     controller.rightBumper().onTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().onTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
 
+    // Toggle
+    controller.povLeft().toggleOnTrue(new RetractArmCommand(armSubsystem));
+    controller.povRight().toggleOnTrue(new ExtendArmCommand(armSubsystem));
+
     controller.a().toggleOnTrue(new OrientDownwardCommand(elevatorSubsystem));
     controller.b().toggleOnTrue(new OrientUpwardCommand(elevatorSubsystem));
     controller.x().toggleOnTrue(new OrientFlatCommand(elevatorSubsystem));
     controller.y().toggleOnTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
 
+    
   }
 
   private void configureCommands() {
