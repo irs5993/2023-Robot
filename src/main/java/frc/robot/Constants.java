@@ -26,6 +26,8 @@ public final class Constants {
     public static final int ELEVATOR_REAR = 3;
 
     public static final int ARM_MAIN = 4;
+
+    public static final int GRIPPER_MAIN = 5;
   }
 
   public static class SensorPorts {
