@@ -70,7 +70,7 @@ public class RobotContainer {
     controller.x().toggleOnTrue(new OrientFlatCommand(elevatorSubsystem));
     controller.y().toggleOnTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
 
-    
+    controller.povUp().toggleOnTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0.1, controller::getLeftY));
   }
 
   private void configureCommands() {
