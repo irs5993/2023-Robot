@@ -12,6 +12,7 @@ import frc.robot.subsystems.VisionSubsystem;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
+import frc.robot.commands.drive.DriveAngleCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
 import frc.robot.commands.drive.FollowTargetCommand;
 import frc.robot.commands.elevator.presets.OrientUpwardCommand;
@@ -53,6 +54,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
+    new JoystickButton(joystick, 5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
     // Continuous
     controller.rightTrigger().onTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
