@@ -23,7 +23,7 @@ import frc.robot.commands.arm.ExtendArmCommand;
 import frc.robot.commands.arm.MoveArmCommand;
 import frc.robot.commands.arm.RetractArmCommand;
 import frc.robot.commands.RunGripperCommand;
-
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -40,7 +40,7 @@ public class RobotContainer {
   private final GripperSubsystem gripperSubsystem = new GripperSubsystem();
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-  private final Joystick joystick = new Joystick(OperatorConstants.JOYSTICK_PORT);
+  private final CommandJoystick joystick = new CommandJoystick(OperatorConstants.JOYSTICK_PORT);
   private final CommandXboxController controller = new CommandXboxController(OperatorConstants.CONTROLLER_PORT);
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -51,28 +51,26 @@ public class RobotContainer {
     configureDashboard();
   }
 
-  private void configureButtonBindings() {
-    new JoystickButton(joystick, 3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
-    new JoystickButton(joystick, 4).toggleOnTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
-    new JoystickButton(joystick, 5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
+  private void configureButtonBindings() {    
+    // Joystick
+    joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
+    joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
-    // Continuous
-    controller.rightTrigger().onTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
-    controller.leftTrigger().onTrue(new MoveArmCommand(armSubsystem, -Constants.MotorSpeedValues.HIGH));
+    // Controller
+    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
+    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, -Constants.MotorSpeedValues.HIGH));
 
-    controller.rightBumper().onTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
-    controller.leftBumper().onTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
+    controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
+    controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
 
-    // Toggle
-    controller.povLeft().toggleOnTrue(new RetractArmCommand(armSubsystem));
-    controller.povRight().toggleOnTrue(new ExtendArmCommand(armSubsystem));
+    controller.povLeft().onTrue(new RetractArmCommand(armSubsystem));
+    controller.povRight().onTrue(new ExtendArmCommand(armSubsystem));
+    controller.povUp().whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0.1, controller::getLeftY));
 
-    controller.a().toggleOnTrue(new OrientDownwardCommand(elevatorSubsystem));
-    controller.b().toggleOnTrue(new OrientUpwardCommand(elevatorSubsystem));
-    controller.x().toggleOnTrue(new OrientFlatCommand(elevatorSubsystem));
-    controller.y().toggleOnTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
-
-    controller.povUp().toggleOnTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0.1, controller::getLeftY));
+    controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
+    controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));
+    controller.x().onTrue(new OrientFlatCommand(elevatorSubsystem));
+    controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
   }
 
   private void configureCommands() {
