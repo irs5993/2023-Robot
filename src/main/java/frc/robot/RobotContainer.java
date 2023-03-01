@@ -11,10 +11,12 @@ import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.CenterTargetCommand;
+import frc.robot.commands.FollowTargetCommand;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
 import frc.robot.commands.drive.DriveAngleCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
-import frc.robot.commands.drive.FollowTargetCommand;
+import frc.robot.commands.drive.TurnAngleCommand;
 import frc.robot.commands.elevator.presets.OrientUpwardCommand;
 import frc.robot.commands.elevator.presets.OrientDownwardCommand;
 import frc.robot.commands.elevator.presets.OrientFlatCommand;
@@ -53,12 +55,22 @@ public class RobotContainer {
 
   private void configureButtonBindings() {    
     // Joystick
+    joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem));
     joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
+    joystick.povUp().onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
+    joystick.povUpRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 45));
+    joystick.povRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 90));
+    joystick.povDownRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 135));
+    joystick.povDown().onTrue(new TurnAngleCommand(drivetrainSubsystem, 180));
+    joystick.povDownLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -135));
+    joystick.povLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -90));
+    joystick.povUpLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -45));
+
     // Controller
-    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
-    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, -Constants.MotorSpeedValues.HIGH));
+    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, controller::getRightTriggerAxis));
+    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, controller::getLeftTriggerAxis));
 
     controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN

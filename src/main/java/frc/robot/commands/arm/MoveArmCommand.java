@@ -4,23 +4,24 @@
 
 package frc.robot.commands.arm;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class MoveArmCommand extends CommandBase {
   private final ArmSubsystem armSubsystem;
-  private double speed;
+  private DoubleSupplier speedSupplier;
 
-  public MoveArmCommand(ArmSubsystem armSubsystem, double speed) {
+  public MoveArmCommand(ArmSubsystem armSubsystem, DoubleSupplier speedSupplier) {
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
 
-    this.speed = speed;
+    this.speedSupplier = speedSupplier;
   }
 
   @Override
   public void execute() {
-    armSubsystem.setMotorSpeed(speed);
+    armSubsystem.setMotorSpeed(speedSupplier.getAsDouble());
   }
 
   @Override
