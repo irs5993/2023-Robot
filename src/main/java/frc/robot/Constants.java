@@ -25,15 +25,15 @@ public final class Constants {
   }
 
   public static class DriverPorts {
-    public static final int CHASIS_LEFT = 0;
-    public static final int CHASIS_RIGHT = 1;
+    public static final int CHASIS_LEFT = 6;
+    public static final int CHASIS_RIGHT = 3;
 
     public static final int ELEVATOR_FRONT = 2;
-    public static final int ELEVATOR_REAR = 3;
+    public static final int ELEVATOR_REAR = 5;
 
-    public static final int ARM_MAIN = 4;
+    public static final int ARM_MAIN = 1;
 
-    public static final int GRIPPER_MAIN = 5;
+    public static final int GRIPPER_MAIN = 0;
   }
 
   public static class SensorPorts {

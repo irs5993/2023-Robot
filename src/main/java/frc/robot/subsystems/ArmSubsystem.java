@@ -20,11 +20,9 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setMotorSpeed(double speed) {
-    if (speed > 0) {
-      if (bottom_switch.get()) return;
-    } else {
-      if (top_switch.get()) return;
-    }
+    // if (speed > 0) {
+    //   if (bottom_switch.get()) return;
+    // }
 
     motor.set(speed);
   }

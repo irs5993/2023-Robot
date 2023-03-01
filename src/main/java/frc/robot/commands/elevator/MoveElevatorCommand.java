@@ -6,6 +6,7 @@ package frc.robot.commands.elevator;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -23,8 +24,11 @@ public class MoveElevatorCommand extends CommandBase {
 
   @Override
   public void execute() {
-    elevatorSubsystem.setFrontElevatorSpeed(-frontSpeedSupplier.getAsDouble());
-    elevatorSubsystem.setRearElevatorSpeed(-rearSpeedSupplier.getAsDouble());
+    double calcFront = MathUtil.applyDeadband(-frontSpeedSupplier.getAsDouble(), 0.15);
+    double calcRear = MathUtil.applyDeadband(-rearSpeedSupplier.getAsDouble(), 0.15);
+    
+    elevatorSubsystem.setFrontElevatorSpeed(calcFront);
+    elevatorSubsystem.setRearElevatorSpeed(calcRear);
   }
 
   @Override

@@ -23,6 +23,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public ElevatorSubsystem() {
     front_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_FRONT);
     rear_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_REAR);
+    rear_motor.setInverted(true);
 
     front_bottom_switch = new DigitalInput(Constants.SensorPorts.Elevator.SWITCH_FRONT_BOTTOM);
     front_top_switch = new DigitalInput(Constants.SensorPorts.Elevator.SWITCH_FRONT_TOP);
@@ -45,23 +46,23 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void setFrontElevatorSpeed(double speed) {
     // Safety protocol to ensure that the cargo doesn't go beyond it's frame
 
-    if (speed > 0) {
-      // Intends to move upwards, prevent if the top switch is on
-      if (front_top_switch.get()) return;
-    } else {
-      // Intends to move downwards, prevent if the bottom switch is on
-      if (front_bottom_switch.get()) return;
-    }
+    // if (speed > 0) {
+    //   // Intends to move upwards, prevent if the top switch is on
+    //   if (front_top_switch.get()) return;
+    // } else {
+    //   // Intends to move downwards, prevent if the bottom switch is on
+    //   if (front_bottom_switch.get()) return;
+    // }
 
     front_motor.set(speed);
   }
 
   public void setRearElevatorSpeed(double speed) {
-    if (speed > 0) {
-      if (rear_top_switch.get()) return;
-    } else {
-      if (rear_bottom_switch.get()) return;
-    }
+    // if (speed > 0) {
+    //   if (rear_top_switch.get()) return;
+    // } else {
+    //   if (rear_bottom_switch.get()) return;
+    // }
 
     rear_motor.set(speed);
   }
