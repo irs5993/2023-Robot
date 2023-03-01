@@ -69,8 +69,8 @@ public class RobotContainer {
     joystick.povUpLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -45));
 
     // Controller
-    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, controller::getRightTriggerAxis));
-    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, controller::getLeftTriggerAxis));
+    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getRightTriggerAxis()));
+    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getLeftTriggerAxis()));
 
     controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
