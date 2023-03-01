@@ -18,6 +18,12 @@ public final class Constants {
     public static final int CONTROLLER_PORT = 1;
   }
 
+  public static class RobotConstants {
+    public static final double kP = 0.06;
+    public static final double kI = 0;
+    public static final double kD = 0.018;
+  }
+
   public static class DriverPorts {
     public static final int CHASIS_LEFT = 0;
     public static final int CHASIS_RIGHT = 1;
