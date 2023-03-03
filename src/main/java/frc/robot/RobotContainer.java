@@ -74,7 +74,6 @@ public class RobotContainer {
 
     controller.povLeft().onTrue(new RetractArmCommand(armSubsystem));
     controller.povRight().onTrue(new ExtendArmCommand(armSubsystem));
-    controller.povUp().whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0.1, controller::getLeftY));
 
     controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
     controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));

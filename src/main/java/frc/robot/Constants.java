@@ -33,7 +33,7 @@ public final class Constants {
 
     public static final int ARM_MAIN = 1;
 
-    public static final int GRIPPER_MAIN = 0;
+    public static final int GRIPPER_MAIN = 4;
   }
 
   public static class SensorPorts {
@@ -49,7 +49,6 @@ public final class Constants {
 
     public static class Arm {
       public static final int SWITCH_BOTTOM = 6;
-      public static final int SWITCH_TOP = 7;
     }
   }
 

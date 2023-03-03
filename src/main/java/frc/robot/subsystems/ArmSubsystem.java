@@ -11,12 +11,11 @@ import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
   private final PWMVictorSPX motor;
-  private final DigitalInput bottom_switch, top_switch;
+  private final DigitalInput bottom_switch;
 
   public ArmSubsystem() {
     motor = new PWMVictorSPX(Constants.DriverPorts.ARM_MAIN);
     bottom_switch = new DigitalInput(Constants.SensorPorts.Arm.SWITCH_BOTTOM);
-    top_switch = new DigitalInput(Constants.SensorPorts.Arm.SWITCH_TOP);
   }
 
   public void setMotorSpeed(double speed) {
@@ -30,10 +29,6 @@ public class ArmSubsystem extends SubsystemBase {
   // Switch state getters
   public boolean getBottomSwitch() {
     return bottom_switch.get();
-  }
-
-  public boolean getTopSwitch() {
-    return top_switch.get();
   }
 
   public void stop() {
