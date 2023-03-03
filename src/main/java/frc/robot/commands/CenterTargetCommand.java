@@ -18,13 +18,15 @@ public class CenterTargetCommand extends CommandBase {
   private final double MAX_OUT = 0.7;
   private final PIDController pid = new PIDController(Constants.RobotConstants.kP, Constants.RobotConstants.kI, Constants.RobotConstants.kD);
 
-  public CenterTargetCommand(DrivetrainSubsystem drivetrainSubsystem, VisionSubsystem visionSubsystem) {
+  public CenterTargetCommand(DrivetrainSubsystem drivetrainSubsystem, VisionSubsystem visionSubsystem, int pipelineIndex) {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.visionSubsystem = visionSubsystem;
+    addRequirements(visionSubsystem, drivetrainSubsystem);
+
+    visionSubsystem.setPipelineIndex(pipelineIndex);
 
     pid.setTolerance(1);
-
-    addRequirements(visionSubsystem, drivetrainSubsystem);
+    pid.enableContinuousInput(-180, 180);
   }
 
   @Override

@@ -17,6 +17,10 @@ public class VisionSubsystem extends SubsystemBase {
     camera = new PhotonCamera("main");
   }
 
+  public void setPipelineIndex(int index) {
+    camera.setPipelineIndex(index);
+  }
+
   public PhotonPipelineResult getLatestResult() {
     return camera.getLatestResult();
   }

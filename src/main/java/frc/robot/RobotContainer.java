@@ -13,6 +13,7 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.commands.Autos;
 import frc.robot.commands.CenterTargetCommand;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
+import frc.robot.commands.drive.ConstantDriveCommand;
 import frc.robot.commands.drive.DriveAngleCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
 import frc.robot.commands.drive.TurnAngleCommand;
@@ -52,18 +53,27 @@ public class RobotContainer {
 
   private void configureButtonBindings() {    
     // Joystick
-    joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem));
     joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
-    joystick.povUp().onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
-    joystick.povUpRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 45));
-    joystick.povRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 90));
-    joystick.povDownRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 135));
-    joystick.povDown().onTrue(new TurnAngleCommand(drivetrainSubsystem, 180));
-    joystick.povDownLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -135));
-    joystick.povLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -90));
-    joystick.povUpLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -45));
+    joystick.button(7).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
+    joystick.button(8).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_APRILTAG));
+
+    // 🚧 TESTING | WILL BE REMOVED 🚧
+    // ------------------------------------------------------------------------------------------------------------
+      joystick.povUp().onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
+      joystick.povUpRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 45));
+      joystick.povRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 90));
+      joystick.povDownRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 135));
+      joystick.povDown().onTrue(new TurnAngleCommand(drivetrainSubsystem, 180));
+      joystick.povDownLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -135));
+      joystick.povLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -90));
+      joystick.povUpLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -45));
+    // ------------------------------------------------------------------------------------------------------------
+
+    // ✅ CORRECT BINDINGS ✅
+    // joystick.povLeft().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, -Constants.MotorSpeedValues.LOW));
+    // joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, Constants.MotorSpeedValues.LOW));
 
     // Controller
     controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // OUT
@@ -71,9 +81,9 @@ public class RobotContainer {
 
     controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
-
-    controller.povLeft().onTrue(new RetractArmCommand(armSubsystem));
-    controller.povRight().onTrue(new ExtendArmCommand(armSubsystem));
+  
+    controller.povLeft().onTrue(new RetractArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
+    controller.povRight().onTrue(new ExtendArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
 
     controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
     controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));
@@ -83,7 +93,9 @@ public class RobotContainer {
 
   private void configureCommands() {
     // Setting up the auto chooser
-    autoChooser.setDefaultOption("Default Command", Autos.exampleAuto(drivetrainSubsystem));
+    autoChooser.setDefaultOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.setDefaultOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.addOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
     drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
@@ -95,10 +107,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Autos.exampleAuto(drivetrainSubsystem);
+    return autoChooser.getSelected();
   }
 
-  
+
 
   // Utility functions attached to the robot container 
   // ------------------------------------------------------------------------------------------------------------
