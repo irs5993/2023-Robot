@@ -94,7 +94,8 @@ public class RobotContainer {
   private void configureCommands() {
     // Setting up the auto chooser
     autoChooser.setDefaultOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
-    autoChooser.setDefaultOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.addOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.addOption("Balance Only", Autos.BalanceOnlyAuto(drivetrainSubsystem));
     autoChooser.addOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems

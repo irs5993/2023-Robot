@@ -43,6 +43,13 @@ public final class Autos {
     );
   }
 
+  public static CommandBase BalanceOnlyAuto(DrivetrainSubsystem drivetrainSubsystem) {
+    return Commands.sequence(
+      new DriveUntilChargeStationCommand(drivetrainSubsystem, -Constants.MotorSpeedValues.MEDIUM),
+      new BalanceChargeStationCommand(drivetrainSubsystem)
+    );
+  }
+
   public static CommandBase IdleAuto() {
     return new WaitCommand(0);
   }
