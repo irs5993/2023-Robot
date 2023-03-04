@@ -45,7 +45,7 @@ public final class Autos {
 
   public static CommandBase BalanceOnlyAuto(DrivetrainSubsystem drivetrainSubsystem) {
     return Commands.sequence(
-      new DriveUntilChargeStationCommand(drivetrainSubsystem, -Constants.MotorSpeedValues.MEDIUM),
+      new DriveUntilChargeStationCommand(drivetrainSubsystem, -Constants.MotorSpeedValues.MEDIUM).withTimeout(7),
       new BalanceChargeStationCommand(drivetrainSubsystem)
     );
   }
