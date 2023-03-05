@@ -52,8 +52,8 @@ public final class Constants {
       public static final int SWITCH_REAR_BOTTOM = 2;
       public static final int SWITCH_REAR_TOP = 3;
 
-      public static final int ENCODER_SIGNAL_A = 4;
-      public static final int ENCODER_SIGNAL_B = 5;
+      public static final int ENCODER_SIGNAL_A = 9;
+      public static final int ENCODER_SIGNAL_B = 8;
     }
 
     public static class Arm {

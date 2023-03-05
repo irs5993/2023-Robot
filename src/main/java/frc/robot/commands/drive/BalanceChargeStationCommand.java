@@ -18,7 +18,7 @@ public class BalanceChargeStationCommand extends PIDCommand {
         // This should return the measurement
         drivetrainSubsystem::getPitch,
         // This should return the setpoint (can also be a constant)
-        -90,
+        3,
         // This uses the output
         output -> {
           drivetrainSubsystem.driveNormal(MathUtil.clamp(output, -0.6, 0.6), 0);

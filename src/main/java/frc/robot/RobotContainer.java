@@ -56,7 +56,7 @@ public class RobotContainer {
     joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
-    joystick.button(7).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
+    joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
     joystick.button(8).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_APRILTAG));
 
     // 🚧 TESTING | WILL BE REMOVED 🚧
@@ -76,8 +76,8 @@ public class RobotContainer {
     // joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, Constants.MotorSpeedValues.LOW));
 
     // Controller
-    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // OUT
-    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getLeftTriggerAxis())); // IN
+    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // CONE INTAKE
+    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getLeftTriggerAxis())); // CUBE INTAKE
 
     controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN

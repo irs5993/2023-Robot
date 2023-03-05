@@ -20,6 +20,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final Encoder encoder;
 
+  private final double FRONT_SPEED_THRESHOLD = 0.45;
+
   public ElevatorSubsystem() {
     front_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_FRONT);
     rear_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_REAR);
@@ -54,7 +56,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     //   if (front_bottom_switch.get()) return;
     // }
 
-    front_motor.set(speed * 0.6);
+    double normalized = Math.signum(speed) * (Math.abs(speed) * (1  - FRONT_SPEED_THRESHOLD) + FRONT_SPEED_THRESHOLD);
+
+    if (speed < 0) {
+      normalized *= 0.35;
+    }
+
+    front_motor.set(normalized);
   }
 
   public void setRearElevatorSpeed(double speed) {
