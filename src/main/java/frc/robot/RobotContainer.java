@@ -93,10 +93,10 @@ public class RobotContainer {
 
   private void configureCommands() {
     // Setting up the auto chooser
-    autoChooser.setDefaultOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.addOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
     autoChooser.addOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
     autoChooser.addOption("Balance Only", Autos.BalanceOnlyAuto(drivetrainSubsystem));
-    autoChooser.addOption("Idle", Autos.IdleAuto());
+    autoChooser.setDefaultOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
     drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
@@ -105,6 +105,19 @@ public class RobotContainer {
 
   private void configureDashboard() {
     SmartDashboard.putData(autoChooser);
+
+    /*  
+        Logs
+          - Is Balanced | BalanceChargeStationCommand (boolean)
+          - Arm Switch | ArmSubsystem (boolean)
+          - Front Bottom Switch | ElevatorSubsystem (boolean)
+          - Front Top Switch | ElevatorSubsystem (boolean)
+          - Rear Bottom Switch | ElevatorSubsystem (boolean)
+          - Rear Top Switch | ElevatorSubsystem (boolean)
+          - Encoder Raw | ElevatorSubsystem (number)
+
+          - Auto Picker | RobotContainer (SendableChooser)
+    */  
   }
 
   public Command getAutonomousCommand() {

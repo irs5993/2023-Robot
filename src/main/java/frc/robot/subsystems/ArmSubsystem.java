@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,6 +17,11 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     motor = new PWMVictorSPX(Constants.DriverPorts.ARM_MAIN);
     bottom_switch = new DigitalInput(Constants.SensorPorts.Arm.SWITCH_BOTTOM);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Arm Switch", getBottomSwitch());
   }
 
   public void setMotorSpeed(double speed) {

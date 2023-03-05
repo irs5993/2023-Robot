@@ -27,7 +27,7 @@ public class BalanceChargeStationCommand extends PIDCommand {
     addRequirements(drivetrainSubsystem);
 
     getController().setTolerance(2);
-    SmartDashboard.putBoolean("is on setpoint", getController().atSetpoint());
+    SmartDashboard.putBoolean("Is Balanced", getController().atSetpoint());
   }
 
   @Override
