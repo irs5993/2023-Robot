@@ -43,6 +43,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Rear Bottom Switch", getRearBottomSwitch());
     SmartDashboard.putBoolean("Rear Top Switch", getRearTopSwitch());
     SmartDashboard.putNumber("Encoder Raw", getEncoderRaw());
+
+    // Reset the encoder each time cargo reaches the bottom of the elevator
+    if (getRearBottomSwitch()) {
+      resetEncoder();
+    }
   }
 
   public void setFrontElevatorSpeed(double speed) {
@@ -50,10 +55,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // if (speed > 0) {
     //   // Intends to move upwards, prevent if the top switch is on
-    //   if (front_top_switch.get()) return;
+    //   if (front_top_switch.get()) {
+    //     speed = 0;
+    //   }
     // } else {
     //   // Intends to move downwards, prevent if the bottom switch is on
-    //   if (front_bottom_switch.get()) return;
+    //   if (front_bottom_switch.get()) {
+    //     speed = 0;
+    //   }
     // }
 
     double normalized = Math.signum(speed) * (Math.abs(speed) * (1  - FRONT_SPEED_THRESHOLD) + FRONT_SPEED_THRESHOLD);
@@ -62,15 +71,21 @@ public class ElevatorSubsystem extends SubsystemBase {
       normalized *= 0.35;
     }
 
+    System.out.println(normalized);
+
     front_motor.set(normalized);
   }
 
   public void setRearElevatorSpeed(double speed) {
-    // if (speed > 0) {
-    //   if (rear_top_switch.get()) return;
-    // } else {
-    //   if (rear_bottom_switch.get()) return;
-    // }
+    if(speed > 0) {
+      // if (rear_top_switch.get()) {
+      //   speed = 0;
+      // }
+    } else {
+      if (rear_bottom_switch.get()) {
+        speed = 0;
+      }
+    }
 
     rear_motor.set(speed);
   }
