@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
@@ -37,6 +39,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void drive(double xSpeed, double zRotation) {
     drive_base.arcadeDrive(xSpeed, -zRotation);
+  }
+
+  public void driveNormal(double xSpeed, double zRotation) {
+    // x -> xSpeed || zRotation
+    // in_min -> 0
+    // in_max -> 1
+    // out_min -> Constants.RobotConstants.STALL_THRESHOLD
+    // out_max -> 1
+
+    double xNormal = Math.signum(xSpeed) * (Math.abs(xSpeed) * (1  - Constants.RobotConstants.STALL_THRESHOLD) + Constants.RobotConstants.STALL_THRESHOLD);
+    double zNormal = Math.signum(zRotation) * (Math.abs(zRotation) * (1  - Constants.RobotConstants.STALL_THRESHOLD) + Constants.RobotConstants.STALL_THRESHOLD);
+    
+    drive_base.arcadeDrive(xNormal, zNormal);
   }
   
   public void resetGyro() {

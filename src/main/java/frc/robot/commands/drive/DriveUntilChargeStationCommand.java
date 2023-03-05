@@ -11,10 +11,7 @@ public class DriveUntilChargeStationCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private double xSpeed;
 
-  private boolean crossed = false;
-
-  private final double TOLERANCE = 5;
-  private final double BOUNDARY = -135;
+  private final double BOUNDARY = -100;
 
   public DriveUntilChargeStationCommand(DrivetrainSubsystem drivetrainSubsystem, double xSpeed) {
     this.drivetrainSubsystem = drivetrainSubsystem;
@@ -24,10 +21,6 @@ public class DriveUntilChargeStationCommand extends CommandBase {
   @Override
   public void execute() {
     drivetrainSubsystem.drive(xSpeed, 0);
-
-    if (drivetrainSubsystem.getPitch() > BOUNDARY) {
-      crossed = true;
-    }
   }
 
   @Override
@@ -37,9 +30,6 @@ public class DriveUntilChargeStationCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if (crossed) {
-      return drivetrainSubsystem.getPitch() <= -90 + TOLERANCE && drivetrainSubsystem.getPitch() >= -90 - TOLERANCE;
-    }
-    return false;
+    return drivetrainSubsystem.getPitch() < BOUNDARY;
   }
 }

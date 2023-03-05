@@ -29,6 +29,8 @@ public final class Constants {
     public static final double kP = 0.06;
     public static final double kI = 0;
     public static final double kD = 0.018;
+
+    public static final double STALL_THRESHOLD = 0.2;
   }
 
   public static class DriverPorts {

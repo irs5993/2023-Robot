@@ -21,7 +21,7 @@ public class BalanceChargeStationCommand extends PIDCommand {
         -90,
         // This uses the output
         output -> {
-          drivetrainSubsystem.drive(MathUtil.clamp(output, -0.6, 0.6), 0);
+          drivetrainSubsystem.driveNormal(MathUtil.clamp(output, -0.6, 0.6), 0);
         });
 
     addRequirements(drivetrainSubsystem);
