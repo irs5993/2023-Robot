@@ -84,7 +84,7 @@ public class RobotContainer {
     controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
     controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
   
-    controller.povLeft().onTrue(new RetractArmCommand(armSubsystem, Constants.MotorSpeedValues.HIGH));
+    controller.povLeft().onTrue(new RetractArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
     controller.povRight().onTrue(new ExtendArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
 
     controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
@@ -103,7 +103,7 @@ public class RobotContainer {
 
     // Setting the default commands of subsystems
     drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, () -> joystick.getY() * (joystick.getRawAxis(3)+1)/2, () -> joystick.getZ() * (joystick.getRawAxis(3)+1)/2));
-    elevatorSubsystem.setDefaultCommand(new MoveElevatorCommand(elevatorSubsystem, controller::getRightY, controller::getLeftY));
+    elevatorSubsystem.setDefaultCommand(new MoveElevatorCommand(elevatorSubsystem, controller::getLeftY, controller::getRightY));
   }
 
   private void configureDashboard() {

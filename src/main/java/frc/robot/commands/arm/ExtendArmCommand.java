@@ -47,6 +47,6 @@ public class ExtendArmCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(4.7);
+    return timer.hasElapsed(5);
   }
 }

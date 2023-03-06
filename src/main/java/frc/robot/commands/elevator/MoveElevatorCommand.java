@@ -24,8 +24,8 @@ public class MoveElevatorCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double calcFront = MathUtil.applyDeadband(-frontSpeedSupplier.getAsDouble(), 0.15);
-    double calcRear = MathUtil.applyDeadband(-rearSpeedSupplier.getAsDouble(), 0.15);
+    double calcFront = MathUtil.applyDeadband(-frontSpeedSupplier.getAsDouble(), 0.2);
+    double calcRear = MathUtil.applyDeadband(-rearSpeedSupplier.getAsDouble(), 0.2);
     
     elevatorSubsystem.setFrontElevatorSpeed(calcFront);
     elevatorSubsystem.setRearElevatorSpeed(calcRear);
