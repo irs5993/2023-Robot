@@ -20,6 +20,8 @@ import frc.robot.commands.drive.TurnAngleCommand;
 import frc.robot.commands.elevator.presets.OrientUpwardCommand;
 import frc.robot.commands.elevator.presets.OrientDownwardCommand;
 import frc.robot.commands.elevator.presets.OrientFlatCommand;
+import frc.robot.commands.elevator.presets.OrientTargetCommand;
+import frc.robot.commands.elevator.CalibrateElevatorCommand;
 import frc.robot.commands.elevator.MoveElevatorCommand;
 import frc.robot.commands.arm.ExtendArmCommand;
 import frc.robot.commands.arm.MoveArmCommand;
@@ -88,7 +90,8 @@ public class RobotContainer {
     controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
     controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));
     controller.x().onTrue(new OrientFlatCommand(elevatorSubsystem));
-    controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
+    controller.y().onTrue(new CalibrateElevatorCommand(elevatorSubsystem).andThen(new OrientTargetCommand(elevatorSubsystem)));
+    // controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
   }
 
   private void configureCommands() {

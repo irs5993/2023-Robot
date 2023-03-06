@@ -48,9 +48,9 @@ public final class Constants {
   public static class SensorPorts {
     public static class Elevator {
       public static final int SWITCH_FRONT_BOTTOM = 2;
-      public static final int SWITCH_FRONT_TOP = 1;
+      public static final int SWITCH_FRONT_TOP = 3;
       public static final int SWITCH_REAR_BOTTOM = 0;
-      public static final int SWITCH_REAR_TOP = 3;
+      public static final int SWITCH_REAR_TOP = 1;
 
       public static final int ENCODER_SIGNAL_A = 9;
       public static final int ENCODER_SIGNAL_B = 8;

@@ -71,16 +71,14 @@ public class ElevatorSubsystem extends SubsystemBase {
       normalized *= 0.35;
     }
 
-    System.out.println(normalized);
-
     front_motor.set(normalized);
   }
 
   public void setRearElevatorSpeed(double speed) {
     if(speed > 0) {
-      // if (rear_top_switch.get()) {
-      //   speed = 0;
-      // }
+      if (rear_top_switch.get()) {
+        speed = 0;
+      }
     } else {
       if (rear_bottom_switch.get()) {
         speed = 0;
