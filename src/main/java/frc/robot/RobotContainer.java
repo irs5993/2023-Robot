@@ -102,7 +102,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
-    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
+    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, () -> joystick.getY() * (joystick.getRawAxis(3)+1)/2, () -> joystick.getZ() * (joystick.getRawAxis(3)+1)/2));
     elevatorSubsystem.setDefaultCommand(new MoveElevatorCommand(elevatorSubsystem, controller::getRightY, controller::getLeftY));
   }
 

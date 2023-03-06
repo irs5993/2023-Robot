@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -68,7 +69,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     double normalized = Math.signum(speed) * (Math.abs(speed) * (1  - FRONT_SPEED_THRESHOLD) + FRONT_SPEED_THRESHOLD);
 
     if (speed < 0) {
-      normalized *= 0.35;
+      normalized *= 0.27;
     }
 
     front_motor.set(normalized);

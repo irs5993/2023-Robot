@@ -12,7 +12,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ExtendArmCommand extends CommandBase {
   private final ArmSubsystem armSubsystem;
   private final Timer timer;
-  private double speed = Constants.MotorSpeedValues.MEDIUM;
+  private double speed = Constants.MotorSpeedValues.MAX;
 
   public ExtendArmCommand(ArmSubsystem armSubsystem) {
     this.armSubsystem = armSubsystem;
@@ -47,6 +47,6 @@ public class ExtendArmCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(3);
+    return timer.hasElapsed(4.7);
   }
 }

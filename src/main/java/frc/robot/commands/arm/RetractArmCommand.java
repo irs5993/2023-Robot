@@ -10,7 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class RetractArmCommand extends CommandBase {
   private final ArmSubsystem armSubsystem;
-  private double speed = Constants.MotorSpeedValues.MEDIUM;
+  private double speed = Constants.MotorSpeedValues.MAX;
 
   public RetractArmCommand(ArmSubsystem armSubsystem) {
     this.armSubsystem = armSubsystem;
