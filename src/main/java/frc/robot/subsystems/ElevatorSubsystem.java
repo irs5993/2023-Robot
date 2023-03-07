@@ -21,7 +21,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final Encoder encoder;
 
-  private final double FRONT_SPEED_THRESHOLD = 0.45;
+  private final double FRONT_SPEED_THRESHOLD = 0.4;
+
+  private boolean bypassSafety = false;
 
   public ElevatorSubsystem() {
     front_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_FRONT);
@@ -44,6 +46,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Rear Bottom Switch", getRearBottomSwitch());
     SmartDashboard.putBoolean("Rear Top Switch", getRearTopSwitch());
     SmartDashboard.putNumber("Encoder Raw", getEncoderRaw());
+    SmartDashboard.putBoolean("ELEVATOR SAFETY", !bypassSafety);
 
     // Reset the encoder each time cargo reaches the bottom of the elevator
     if (getRearBottomSwitch()) {
@@ -53,19 +56,20 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setFrontElevatorSpeed(double speed) {
     // Safety protocol to ensure that the cargo doesn't go beyond it's frame
-
-    // if (speed > 0) {
-    //   // Intends to move upwards, prevent if the top switch is on
-    //   if (front_top_switch.get()) {
-    //     speed = 0;
-    //   }
-    // } else {
-    //   // Intends to move downwards, prevent if the bottom switch is on
-    //   if (front_bottom_switch.get()) {
-    //     speed = 0;
-    //   }
-    // }
-
+    if (!bypassSafety) {
+      if (speed > 0) {
+        // Intends to move upwards, prevent if the top switch is on
+        if (front_top_switch.get()) {
+          speed = 0;
+        }
+      } else {
+        // Intends to move downwards, prevent if the bottom switch is on
+        if (front_bottom_switch.get()) {
+          speed = 0;
+        }
+      }
+    }
+    
     double normalized = Math.signum(speed) * (Math.abs(speed) * (1  - FRONT_SPEED_THRESHOLD) + FRONT_SPEED_THRESHOLD);
 
     if (speed < 0) {
@@ -76,17 +80,23 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setRearElevatorSpeed(double speed) {
-    if(speed > 0) {
-      if (rear_top_switch.get()) {
-        speed = 0;
-      }
-    } else {
-      if (rear_bottom_switch.get()) {
-        speed = 0;
+    if(!bypassSafety) {
+      if(speed > 0) {
+        if (rear_top_switch.get()) {
+          speed = 0;
+        }
+      } else {
+        if (rear_bottom_switch.get()) {
+          speed = 0;
+        }
       }
     }
-
+  
     rear_motor.set(speed);
+  }
+
+  public void bypassSafety(boolean value) {
+    bypassSafety = value;
   }
 
   // Switch state getters

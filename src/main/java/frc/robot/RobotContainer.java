@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.OperatorConstants;
 
 public class RobotContainer {
@@ -47,6 +48,8 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+  public boolean bypassElevatorSafety = false;
+
   public RobotContainer() {
     configureButtonBindings();
     configureCommands();
@@ -60,6 +63,18 @@ public class RobotContainer {
 
     joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
     joystick.button(8).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_APRILTAG));
+
+    joystick.button(6).whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> -Constants.MotorSpeedValues.HIGH, () -> 0)); // FRONT UP
+    joystick.button(5).whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> Constants.MotorSpeedValues.MAX, () -> 0)); // FRONT DOWN
+    joystick.button(9).whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0, () -> -Constants.MotorSpeedValues.HIGH)); // REAR UP
+    joystick.button(10).whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> 0, () -> Constants.MotorSpeedValues.HIGH)); // REAR DOWN
+
+    joystick.button(11).whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // CONE INTAKE
+    joystick.button(12).whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // CUBE INTAKE
+
+    joystick.button(15).whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // EXTEND
+    joystick.button(16).whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getRightTriggerAxis())); // RETRACT
+
 
     // 🚧 TESTING | WILL BE REMOVED 🚧
     // ------------------------------------------------------------------------------------------------------------
@@ -78,11 +93,11 @@ public class RobotContainer {
     // joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, Constants.MotorSpeedValues.LOW));
 
     // Controller
-    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // CONE INTAKE
-    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getLeftTriggerAxis())); // CUBE INTAKE
+    controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // EXTEND
+    controller.leftTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getLeftTriggerAxis())); // RETRACT
 
-    controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // OUT
-    controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // IN
+    controller.rightBumper().whileTrue(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX)); // CONE INTAKE
+    controller.leftBumper().whileTrue(new RunGripperCommand(gripperSubsystem, -Constants.MotorSpeedValues.MAX)); // CUBE INTAKE
   
     controller.povLeft().onTrue(new RetractArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
     controller.povRight().onTrue(new ExtendArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
@@ -92,6 +107,8 @@ public class RobotContainer {
     controller.x().onTrue(new OrientFlatCommand(elevatorSubsystem));
     controller.y().onTrue(new CalibrateElevatorCommand(elevatorSubsystem).andThen(new OrientTargetCommand(elevatorSubsystem)));
     // controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
+
+    controller.start().toggleOnTrue(Commands.startEnd(() -> elevatorSubsystem.bypassSafety(true), () -> elevatorSubsystem.bypassSafety(false), elevatorSubsystem));
   }
 
   private void configureCommands() {
