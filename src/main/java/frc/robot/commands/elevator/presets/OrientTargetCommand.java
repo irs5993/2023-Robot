@@ -5,37 +5,54 @@
 package frc.robot.commands.elevator.presets;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.Constants;
 
 public class OrientTargetCommand extends CommandBase {
   private final ElevatorSubsystem elevatorSubsystem;
-  private double rear_elevator_speed = Constants.MotorSpeedValues.MEDIUM, front_elevator_speed = Constants.MotorSpeedValues.MEDIUM;
-  private final PIDController pid = new PIDController(0.1, 0, 0.02);
-  private final double SETPOINT = -80;
+  private double rear_elevator_speed = Constants.MotorSpeedValues.MAX, front_elevator_speed = Constants.MotorSpeedValues.LOW;
+
+  private final double SETPOINT = 6200;
+  private final double TOLERANCE = 50;
+  private boolean atSetpoint = false;
+
+  private boolean upfirst = false;
   
   public OrientTargetCommand(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
     addRequirements(elevatorSubsystem); 
-  }
 
-  public OrientTargetCommand(ElevatorSubsystem elevatorSubsystem, double speed) {
-    this.elevatorSubsystem = elevatorSubsystem;
-    addRequirements(elevatorSubsystem); 
-
-    rear_elevator_speed = Math.abs(speed);
-    front_elevator_speed = Math.abs(speed);
+    if (elevatorSubsystem.getEncoderRaw() > 4150) {
+      upfirst = true;
+    }
   }
 
   @Override
   public void execute() {
-    // elevatorSubsystem.setFrontElevatorSpeed(front_elevator_speed);
+    if (upfirst) {
+      elevatorSubsystem.setFrontElevatorSpeed(front_elevator_speed);
 
-    //double rear = pid.calculate(elevatorSubsystem.getEncoderRaw(), SETPOINT);
-    if (elevatorSubsystem.getEncoderRaw() >= -4500) {
-      elevatorSubsystem.setRearElevatorSpeed(0.7);
+      if (elevatorSubsystem.getFrontTopSwitch()) {
+        levelRear();
+      }
     } else {
+      levelRear();
+      if (atSetpoint) {
+        elevatorSubsystem.setFrontElevatorSpeed(front_elevator_speed);
+      }
+    }
+  }
+
+  private void levelRear() {
+    double encoder = elevatorSubsystem.getEncoderRaw();
+    if (encoder < SETPOINT - TOLERANCE) {
+      elevatorSubsystem.setRearElevatorSpeed(rear_elevator_speed);
+    } else if (encoder > SETPOINT + TOLERANCE) {
+      elevatorSubsystem.setRearElevatorSpeed(-rear_elevator_speed);
+    } else {
+      atSetpoint = true;
       elevatorSubsystem.setRearElevatorSpeed(0);
     }
   }
@@ -43,10 +60,11 @@ public class OrientTargetCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     elevatorSubsystem.stop();
+    atSetpoint = false;
   }
 
   @Override
   public boolean isFinished() {
-    return pid.atSetpoint();
+    return atSetpoint && elevatorSubsystem.getFrontTopSwitch();
   }
 }

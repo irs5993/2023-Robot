@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -23,7 +22,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final double FRONT_SPEED_THRESHOLD = 0.4;
 
-  private boolean bypassSafety = false;
+  public boolean bypassSafety = false;
 
   public ElevatorSubsystem() {
     front_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_FRONT);
@@ -93,10 +92,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
   
     rear_motor.set(speed);
-  }
-
-  public void bypassSafety(boolean value) {
-    bypassSafety = value;
   }
 
   // Switch state getters

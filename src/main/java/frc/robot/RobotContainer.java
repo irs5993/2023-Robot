@@ -29,7 +29,7 @@ import frc.robot.commands.arm.RetractArmCommand;
 import frc.robot.commands.RunGripperCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,7 +59,7 @@ public class RobotContainer {
   private void configureButtonBindings() {    
     // Joystick
     joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
-    joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
+    // joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
 
     joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
     joystick.button(8).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_APRILTAG));
@@ -105,10 +105,10 @@ public class RobotContainer {
     controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
     controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));
     controller.x().onTrue(new OrientFlatCommand(elevatorSubsystem));
-    controller.y().onTrue(new CalibrateElevatorCommand(elevatorSubsystem).andThen(new OrientTargetCommand(elevatorSubsystem)));
+    controller.y().onTrue(new OrientTargetCommand(elevatorSubsystem));
     // controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
 
-    controller.start().toggleOnTrue(Commands.startEnd(() -> elevatorSubsystem.bypassSafety(true), () -> elevatorSubsystem.bypassSafety(false), elevatorSubsystem));
+    controller.start().onTrue(Commands.runOnce(() -> elevatorSubsystem.bypassSafety = !elevatorSubsystem.bypassSafety, elevatorSubsystem));
   }
 
   private void configureCommands() {
@@ -124,6 +124,8 @@ public class RobotContainer {
   }
 
   private void configureDashboard() {
+    CameraServer.startAutomaticCapture();
+
     SmartDashboard.putData(autoChooser);
 
     /*  
