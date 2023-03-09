@@ -12,15 +12,17 @@ import frc.robot.subsystems.VisionSubsystem;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.CenterTargetCommand;
+import frc.robot.commands.FollowTargetCommand;
+import frc.robot.commands.MoveServoCommand;
 import frc.robot.commands.drive.BalanceChargeStationCommand;
 import frc.robot.commands.drive.ConstantDriveCommand;
 import frc.robot.commands.drive.DriveAngleCommand;
 import frc.robot.commands.drive.DynamicDriveCommand;
 import frc.robot.commands.drive.TurnAngleCommand;
-import frc.robot.commands.elevator.presets.OrientUpwardCommand;
-import frc.robot.commands.elevator.presets.OrientDownwardCommand;
 import frc.robot.commands.elevator.presets.OrientFlatCommand;
 import frc.robot.commands.elevator.presets.OrientTargetCommand;
+import frc.robot.commands.elevator.presets.OrientTargetFlatCommand;
+import frc.robot.commands.elevator.presets.OrientUpwardCommand;
 import frc.robot.commands.elevator.CalibrateElevatorCommand;
 import frc.robot.commands.elevator.MoveElevatorCommand;
 import frc.robot.commands.arm.ExtendArmCommand;
@@ -28,6 +30,7 @@ import frc.robot.commands.arm.MoveArmCommand;
 import frc.robot.commands.arm.RetractArmCommand;
 import frc.robot.commands.RunGripperCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -59,9 +62,9 @@ public class RobotContainer {
   private void configureButtonBindings() {    
     // Joystick
     joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
-    // joystick.button(5).toggleOnTrue(new DriveAngleCommand(drivetrainSubsystem, 90));
+    joystick.button(4).onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
 
-    joystick.trigger().whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_REFLECTIVE));
+    joystick.trigger().whileTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
     joystick.button(8).whileTrue(new CenterTargetCommand(drivetrainSubsystem, visionSubsystem, Constants.Vision.PIPELINE_APRILTAG));
 
     joystick.button(6).whileTrue(new MoveElevatorCommand(elevatorSubsystem, () -> -Constants.MotorSpeedValues.HIGH, () -> 0)); // FRONT UP
@@ -75,22 +78,10 @@ public class RobotContainer {
     joystick.button(15).whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // EXTEND
     joystick.button(16).whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getRightTriggerAxis())); // RETRACT
 
-
-    // 🚧 TESTING | WILL BE REMOVED 🚧
-    // ------------------------------------------------------------------------------------------------------------
-      joystick.povUp().onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
-      joystick.povUpRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 45));
-      joystick.povRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 90));
-      joystick.povDownRight().onTrue(new TurnAngleCommand(drivetrainSubsystem, 135));
-      joystick.povDown().onTrue(new TurnAngleCommand(drivetrainSubsystem, 180));
-      joystick.povDownLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -135));
-      joystick.povLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -90));
-      joystick.povUpLeft().onTrue(new TurnAngleCommand(drivetrainSubsystem, -45));
-    // ------------------------------------------------------------------------------------------------------------
-
-    // ✅ CORRECT BINDINGS ✅
-    // joystick.povLeft().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, -Constants.MotorSpeedValues.LOW));
-    // joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, Constants.MotorSpeedValues.LOW));
+    joystick.povUp().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0.45, 0));
+    joystick.povDown().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, -0.45, 0));
+    joystick.povLeft().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, -0.5));
+    joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, 0.5));
 
     // Controller
     controller.rightTrigger().whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // EXTEND
@@ -102,10 +93,10 @@ public class RobotContainer {
     controller.povLeft().onTrue(new RetractArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
     controller.povRight().onTrue(new ExtendArmCommand(armSubsystem, Constants.MotorSpeedValues.MAX));
 
-    controller.a().onTrue(new OrientDownwardCommand(elevatorSubsystem));
-    controller.b().onTrue(new OrientUpwardCommand(elevatorSubsystem));
-    controller.x().onTrue(new OrientFlatCommand(elevatorSubsystem));
-    controller.y().onTrue(new OrientTargetCommand(elevatorSubsystem));
+    controller.x().onTrue(new OrientTargetFlatCommand(elevatorSubsystem));
+    controller.y().onTrue(new OrientUpwardCommand(elevatorSubsystem));
+    controller.a().onTrue(new OrientFlatCommand(elevatorSubsystem));
+    controller.b().onTrue(new OrientTargetCommand(elevatorSubsystem));
     // controller.y().onTrue(new ExtendArmCommand(armSubsystem).andThen(new RunGripperCommand(gripperSubsystem, Constants.MotorSpeedValues.MAX).withTimeout(2)));
 
     controller.start().onTrue(Commands.runOnce(() -> elevatorSubsystem.bypassSafety = !elevatorSubsystem.bypassSafety, elevatorSubsystem));
@@ -119,8 +110,9 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
-    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, () -> joystick.getY() * (joystick.getRawAxis(3)+1)/2, () -> joystick.getZ() * (joystick.getRawAxis(3)+1)/2));
+    drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));
     elevatorSubsystem.setDefaultCommand(new MoveElevatorCommand(elevatorSubsystem, controller::getLeftY, controller::getRightY));
+    visionSubsystem.setDefaultCommand(new MoveServoCommand(visionSubsystem, () -> joystick.getRawAxis(3)));
   }
 
   private void configureDashboard() {

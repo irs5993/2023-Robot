@@ -7,11 +7,11 @@ package frc.robot.commands.elevator.presets;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class OrientTargetCommand extends CommandBase {
+public class OrientTargetFlatCommand extends CommandBase {
   private final ElevatorSubsystem elevatorSubsystem;
-  private double front_elevator_speed = 0.15;
-
-  public OrientTargetCommand(ElevatorSubsystem elevatorSubsystem) {
+  private double front_elevator_speed = 0.23;
+    
+  public OrientTargetFlatCommand(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
     addRequirements(elevatorSubsystem); 
   }
@@ -19,7 +19,7 @@ public class OrientTargetCommand extends CommandBase {
   @Override
   public void execute() {
     elevatorSubsystem.setFrontElevatorSpeed(front_elevator_speed);
-    elevatorSubsystem.setRearElevatorPosition(6200);
+    elevatorSubsystem.setRearElevatorPosition(6150);
   }
 
   @Override

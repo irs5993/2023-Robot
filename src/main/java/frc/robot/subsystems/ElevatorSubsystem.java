@@ -23,6 +23,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final double FRONT_SPEED_THRESHOLD = 0.4;
 
   public boolean bypassSafety = false;
+  private boolean atSetpoint = false;
 
   public ElevatorSubsystem() {
     front_motor = new PWMVictorSPX(Constants.DriverPorts.ELEVATOR_FRONT);
@@ -89,9 +90,32 @@ public class ElevatorSubsystem extends SubsystemBase {
           speed = 0;
         }
       }
+
+      if (getEncoderRaw() < 250 && speed < 0) {
+        speed *= 0.5;
+      }
     }
   
     rear_motor.set(speed);
+  }
+
+  public void setRearElevatorPosition(int position) {
+    if (getEncoderRaw() < position - 20) {
+      setRearElevatorSpeed(1);
+    } else if (getEncoderRaw() > position + 20) {
+      setRearElevatorSpeed(-1);
+    } else {
+      setRearElevatorSpeed(0);
+      atSetpoint = true;
+    }
+  }
+
+  public boolean rearAtSetpoint() {
+    return atSetpoint;
+  }
+
+  public void resetRearSetpoint() {
+    atSetpoint = false;
   }
 
   // Switch state getters

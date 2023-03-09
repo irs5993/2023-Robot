@@ -18,15 +18,15 @@ public class BalanceChargeStationCommand extends PIDCommand {
         // This should return the measurement
         drivetrainSubsystem::getPitch,
         // This should return the setpoint (can also be a constant)
-        3,
+        -1,
         // This uses the output
         output -> {
-          drivetrainSubsystem.driveNormal(MathUtil.clamp(output, -0.6, 0.6), 0);
+          drivetrainSubsystem.driveNormal(-MathUtil.clamp(output, -0.5, 0.5), 0);
         });
 
     addRequirements(drivetrainSubsystem);
 
-    getController().setTolerance(2);
+    getController().setTolerance(5);
     SmartDashboard.putBoolean("Is Balanced", getController().atSetpoint());
   }
 

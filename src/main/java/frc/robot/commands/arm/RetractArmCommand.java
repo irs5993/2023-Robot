@@ -47,6 +47,6 @@ public class RetractArmCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(7.4);
+    return timer.hasElapsed(7.3);
   }
 }

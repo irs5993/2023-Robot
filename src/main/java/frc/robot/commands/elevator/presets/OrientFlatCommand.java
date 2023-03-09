@@ -4,40 +4,38 @@
 
 package frc.robot.commands.elevator.presets;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.Constants;
 
 public class OrientFlatCommand extends CommandBase {
   private final ElevatorSubsystem elevatorSubsystem;
-  private double rear_elevator_speed = Constants.MotorSpeedValues.MEDIUM, front_elevator_speed = Constants.MotorSpeedValues.MEDIUM;
-  
+  private double front_elevator_speed = 0.23;
+
+  private final PIDController pid = new PIDController(1, 0, 0);
+    
   public OrientFlatCommand(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
     addRequirements(elevatorSubsystem); 
-  }
 
-  public OrientFlatCommand(ElevatorSubsystem elevatorSubsystem, double speed) {
-    this.elevatorSubsystem = elevatorSubsystem;
-    addRequirements(elevatorSubsystem); 
-
-    rear_elevator_speed = Math.abs(speed);
-    front_elevator_speed = Math.abs(speed);
+    pid.setTolerance(20);
   }
 
   @Override
   public void execute() {
-    elevatorSubsystem.setRearElevatorSpeed(-rear_elevator_speed);
     elevatorSubsystem.setFrontElevatorSpeed(-front_elevator_speed);
+    elevatorSubsystem.setRearElevatorSpeed(pid.calculate(elevatorSubsystem.getEncoderRaw(), 600));
   }
 
   @Override
   public void end(boolean interrupted) {
     elevatorSubsystem.stop();
+    elevatorSubsystem.resetRearSetpoint();
   }
 
   @Override
   public boolean isFinished() {
-    return elevatorSubsystem.getRearBottomSwitch() && elevatorSubsystem.getFrontBottomSwitch();
+    return elevatorSubsystem.rearAtSetpoint() && elevatorSubsystem.getFrontBottomSwitch();
   }
 }
