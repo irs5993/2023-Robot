@@ -55,6 +55,10 @@ public final class Autos {
     );
   }
 
+  public static CommandBase ExitCommunity(DrivetrainSubsystem drivetrainSubsystem) {
+    return new ConstantDriveCommand(drivetrainSubsystem, -0.5, 0).withTimeout(3);
+  }
+
   public static CommandBase IdleAuto() {
     return new WaitCommand(0);
   }

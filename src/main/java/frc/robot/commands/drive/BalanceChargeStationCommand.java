@@ -14,14 +14,14 @@ public class BalanceChargeStationCommand extends PIDCommand {
   public BalanceChargeStationCommand(DrivetrainSubsystem drivetrainSubsystem) {
     super(
         // The controller that the command will use
-        new PIDController(0.065, 0, 0.015),
+        new PIDController(0.065, 0, 0.01),
         // This should return the measurement
         drivetrainSubsystem::getPitch,
         // This should return the setpoint (can also be a constant)
         -1,
         // This uses the output
         output -> {
-          drivetrainSubsystem.driveNormal(-MathUtil.clamp(output, -0.5, 0.5), 0);
+          drivetrainSubsystem.driveNormal(-MathUtil.clamp(output, -0.4, 0.4), 0);
         });
 
     addRequirements(drivetrainSubsystem);

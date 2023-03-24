@@ -61,7 +61,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {    
     // Joystick
-    joystick.button(3).toggleOnTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
+    joystick.button(3).whileTrue(new BalanceChargeStationCommand(drivetrainSubsystem));
     joystick.button(4).onTrue(new TurnAngleCommand(drivetrainSubsystem, 0));
 
     joystick.trigger().whileTrue(new FollowTargetCommand(drivetrainSubsystem, visionSubsystem));
@@ -78,8 +78,8 @@ public class RobotContainer {
     joystick.button(15).whileTrue(new MoveArmCommand(armSubsystem, () -> -controller.getRightTriggerAxis())); // EXTEND
     joystick.button(16).whileTrue(new MoveArmCommand(armSubsystem, () -> controller.getRightTriggerAxis())); // RETRACT
 
-    joystick.povUp().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0.45, 0));
-    joystick.povDown().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, -0.45, 0));
+    joystick.povUp().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0.55, 0));
+    joystick.povDown().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, -0.55, 0));
     joystick.povLeft().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, -0.5));
     joystick.povRight().whileTrue(new ConstantDriveCommand(drivetrainSubsystem, 0, 0.5));
 
@@ -107,6 +107,7 @@ public class RobotContainer {
     autoChooser.addOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
     autoChooser.addOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
     autoChooser.addOption("Balance Only", Autos.BalanceOnlyAuto(drivetrainSubsystem));
+    autoChooser.addOption("Exit Community", Autos.ExitCommunity(drivetrainSubsystem));
     autoChooser.setDefaultOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
