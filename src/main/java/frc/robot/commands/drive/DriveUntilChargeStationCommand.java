@@ -11,11 +11,11 @@ public class DriveUntilChargeStationCommand extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private double xSpeed;
 
-  private final double BOUNDARY = 10;
-
   public DriveUntilChargeStationCommand(DrivetrainSubsystem drivetrainSubsystem, double xSpeed) {
     this.drivetrainSubsystem = drivetrainSubsystem;
+
     addRequirements(drivetrainSubsystem);
+    this.xSpeed = xSpeed;
   }
 
   @Override
@@ -30,6 +30,6 @@ public class DriveUntilChargeStationCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return drivetrainSubsystem.getPitch() > BOUNDARY;
+    return drivetrainSubsystem.getPitch() < -10;
   }
 }

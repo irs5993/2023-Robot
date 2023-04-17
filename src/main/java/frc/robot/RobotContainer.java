@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -104,11 +105,12 @@ public class RobotContainer {
 
   private void configureCommands() {
     // Setting up the auto chooser
-    autoChooser.addOption("Score & Balance", Autos.ScoreBalanceAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
-    autoChooser.addOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
+    autoChooser.setDefaultOption("Score Only", Autos.ScoreOnlyAuto(drivetrainSubsystem, elevatorSubsystem, armSubsystem, gripperSubsystem));
     autoChooser.addOption("Balance Only", Autos.BalanceOnlyAuto(drivetrainSubsystem));
     autoChooser.addOption("Exit Community", Autos.ExitCommunity(drivetrainSubsystem));
-    autoChooser.setDefaultOption("Idle", Autos.IdleAuto());
+    autoChooser.addOption("Exit Cable Community", Autos.ExitCableCommunity(drivetrainSubsystem));
+    autoChooser.addOption("Exit Community Close", Autos.ExitCommunityClose(drivetrainSubsystem));
+    autoChooser.addOption("Idle", Autos.IdleAuto());
 
     // Setting the default commands of subsystems
     drivetrainSubsystem.setDefaultCommand(new DynamicDriveCommand(drivetrainSubsystem, joystick::getY, joystick::getZ));

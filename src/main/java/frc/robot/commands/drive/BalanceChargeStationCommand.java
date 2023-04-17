@@ -21,12 +21,12 @@ public class BalanceChargeStationCommand extends PIDCommand {
         -1,
         // This uses the output
         output -> {
-          drivetrainSubsystem.driveNormal(-MathUtil.clamp(output, -0.4, 0.4), 0);
+          drivetrainSubsystem.driveNormal(-MathUtil.clamp(output, -0.43, 0.43), 0);
         });
 
     addRequirements(drivetrainSubsystem);
 
-    getController().setTolerance(5);
+    getController().setTolerance(10);
     SmartDashboard.putBoolean("Is Balanced", getController().atSetpoint());
   }
 
